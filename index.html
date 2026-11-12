@@ -1333,7 +1333,7 @@
     async function loadState() {
       try {
         const {data:sessionData}=await db.auth.getSession(); supabaseSession=sessionData.session; isAdminLoggedIn=Boolean(supabaseSession);
-        const [pr,dr,rr]=await Promise.all([db.from('players').select('*').order('slot'),db.from('draws').select('*').order('draw_number'),db.from('rules').select('*').eq('id',1).maybeSingle()]);
+        const [pr,dr,rr]=await Promise.all([db.from('players').select('slot,name,numbers').order('slot'),db.from('draws').select('*').order('draw_number'),db.from('rules').select('*').eq('id',1).maybeSingle()]);
         if(pr.error) throw pr.error; if(dr.error) throw dr.error; if(rr.error) throw rr.error;
         players=(pr.data||[]).map(playerFromRow); if(!players.length) players=initializeDefaultPlayers();
         draws=(dr.data||[]).map(r=>({id:Number(r.draw_number),name:`Draw #${r.draw_number}`,date:r.draw_date||'',numbers:Array.isArray(r.numbers)?r.numbers.map(Number):[]})); draws = draws.filter(d => d.id >= 1 && d.id <= 8).sort((a,b) => a.id - b.id);
