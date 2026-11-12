@@ -1342,7 +1342,23 @@
           draws = initializeDefaultDraws().map(d => existing.get(d.id) || d);
         }
         poolRules=rr.data?{startDate:rr.data.start_date||'',endDate:rr.data.end_date||'',registrationStartDate:rr.data.registration_start_date||'',registrationEndDate:rr.data.registration_end_date||'',rulesText:rr.data.rules_text||''}:{...DEFAULT_RULES};
-      } catch(e) { console.error('Supabase load failed:',e); players=initializeDefaultPlayers(); draws=initializeDefaultDraws(); poolRules={...DEFAULT_RULES}; setTimeout(()=>showToast('Could not load shared database. Check Supabase setup and RLS policies.','error'),200); }
+      } catch(e) {
+  console.error('Supabase load failed:', e);
+  players = initializeDefaultPlayers();
+  draws = initializeDefaultDraws();
+  poolRules = {...DEFAULT_RULES};
+
+  const details = [
+    e.message,
+    e.details,
+    e.hint,
+    e.code
+  ].filter(Boolean).join(' | ');
+
+  setTimeout(() => {
+    showToast('Database error: ' + details, 'error');
+  }, 200);
+}
     }
     let saveTimer=null;
     function saveState(){clearTimeout(saveTimer);saveTimer=setTimeout(syncStateToSupabase,150);}
