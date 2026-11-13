@@ -1193,8 +1193,8 @@
 
     // Default Rules and Schedule
     const DEFAULT_RULES = {
-      startDate: '2026-10-10',
-      endDate: '2026-11-14',
+      startDate: '2026-12-05',
+      endDate: '2026-12-30',
         registrationStartDate: '',
         registrationEndDate: '',
       rulesText: `1. Entry Fee: Exactly $20.00 per slot (unlimited players welcome - no cap on participation).
